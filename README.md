@@ -4,6 +4,8 @@ Voyara is an agentic AI travel planner that takes your travel preferences throug
 
 ---
 
+[Watch the video](https://youtu.be/IgCcIvHCk88)
+
 ## Table of Contents
 
 - [Features](#features)
