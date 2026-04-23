@@ -511,6 +511,163 @@
     }
     .link-chip:hover { background: rgba(26,115,232,0.45); border-color: var(--accent); color: #fff; }
 
+    /* Transport button on package card */
+    .transport-btn {
+      margin-top: 14px;
+      width: 100%;
+      padding: 10px;
+      background: rgba(255,193,7,0.12);
+      border: 1px solid rgba(255,193,7,0.35);
+      border-radius: 10px;
+      color: #ffe082;
+      font-size: 0.86rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.2px;
+    }
+    .transport-btn:hover { background: rgba(255,193,7,0.22); border-color: #ffe082; color: #fff; }
+
+    /* ── Transport Modal ──────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-box {
+      width: 100%;
+      max-width: 560px;
+      background: rgba(10,12,40,0.97);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 20px;
+      padding: 36px 40px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+      animation: cardIn 0.3s ease;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .modal-dest {
+      font-size: 0.88rem;
+      color: var(--accent);
+      margin-bottom: 22px;
+    }
+    .modal-close {
+      float: right;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: #fff; }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .toggle-row label { margin: 0; font-size: 0.9rem; color: rgba(255,255,255,0.8); cursor: pointer; }
+    input[type="checkbox"] {
+      width: 18px; height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Transport results inside modal */
+    .transport-section { margin-top: 20px; }
+    .transport-section h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffe082;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .transport-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 0.86rem;
+    }
+    .transport-card .tc-row { display: flex; gap: 6px; margin-bottom: 3px; color: rgba(255,255,255,0.75); }
+    .transport-card .tc-row strong { color: #fff; min-width: 80px; flex-shrink: 0; }
+    .transport-card .tc-row.note-row { color: rgba(255,255,255,0.5); font-style: italic; }
+    .tc-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 14px;
+      background: rgba(26,115,232,0.25);
+      border: 1px solid rgba(79,195,247,0.35);
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .tc-link:hover { background: rgba(26,115,232,0.45); color: #fff; }
+    .transport-summary {
+      background: rgba(102,187,106,0.1);
+      border: 1px solid rgba(102,187,106,0.3);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #a5d6a7;
+      font-style: italic;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .transport-loader {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+    .transport-spinner {
+      width: 36px; height: 36px;
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top-color: #ffe082;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 14px;
+    }
+    .email-sent-badge {
+      display: inline-block;
+      background: rgba(102,187,106,0.15);
+      border: 1px solid rgba(102,187,106,0.4);
+      color: #a5d6a7;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
     .restart-btn {
       display: block;
       width: 100%;
@@ -753,6 +910,29 @@
   <!-- ── Results ── -->
   <div id="results"></div>
 
+  <!-- ── Transport Modal ── -->
+  <div class="modal-overlay hidden" id="transportModal">
+    <div class="modal-box" id="transportModalBox">
+      <button class="modal-close" onclick="closeTransportModal()">✕</button>
+      <p class="modal-title">🚀 Transport Planner</p>
+      <p class="modal-dest" id="modalDest"></p>
+      <div id="transportForm">
+        <label class="field-label" style="margin-bottom:6px;">Your Departure City</label>
+        <input type="text" id="originCity" placeholder="e.g. Bangalore, Mumbai, Delhi…" style="margin-bottom:14px;" />
+        <div class="toggle-row">
+          <input type="checkbox" id="sendTransportEmail" />
+          <label for="sendTransportEmail">📧 Also email me the transport plan</label>
+        </div>
+        <input type="email" id="transportEmailAddr" placeholder="your@email.com" style="display:none;margin-top:8px;" />
+        <div class="btn-row" style="margin-top:18px;">
+          <button class="btn-back" onclick="closeTransportModal()">Cancel</button>
+          <button class="btn-next" style="background:linear-gradient(135deg,#f9a825,#ffe082);color:#222;" onclick="fetchTransport()">🔍 Find Transport Options</button>
+        </div>
+      </div>
+      <div id="transportResults" class="hidden"></div>
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <script>
@@ -903,6 +1083,10 @@
       const links = (pkg.links || []).map(l =>
         `<a class="link-chip" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`
       ).join('');
+      // Encode destination for transport modal
+      const destEncoded = encodeURIComponent(pkg.destination);
+      const monthEncoded = encodeURIComponent(payload.travel_month);
+      const yearEncoded  = encodeURIComponent(payload.travel_year);
       pkgsHtml += `
         <div class="pkg-card">
           <div style="display:flex;align-items:flex-start;gap:10px;">
@@ -918,6 +1102,10 @@
           </div>
           <ul class="pkg-highlights">${highlights}</ul>
           <div class="pkg-links">${links}</div>
+          <button class="transport-btn"
+            onclick="openTransportModal('${destEncoded}','${monthEncoded}','${yearEncoded}')">
+            🚆 View Transport Plan (Flights · Trains · Buses)
+          </button>
         </div>`;
     });
 
@@ -935,6 +1123,135 @@
       </div>
       ${pkgsHtml}
       <button class="restart-btn" onclick="restartForm()">🔄 Plan Another Trip with Voyara</button>
+    `;
+  }
+
+  // ── Transport Subagent ────────────────────────────────────────────
+  let _transportDest  = '';
+  let _transportMonth = '';
+  let _transportYear  = '';
+
+  function openTransportModal(destEnc, monthEnc, yearEnc) {
+    _transportDest  = decodeURIComponent(destEnc);
+    _transportMonth = decodeURIComponent(monthEnc);
+    _transportYear  = decodeURIComponent(yearEnc);
+
+    document.getElementById('modalDest').textContent = `📍 ${_transportDest}  ·  ${_transportMonth} ${_transportYear}`;
+    document.getElementById('originCity').value = '';
+    document.getElementById('sendTransportEmail').checked = false;
+    document.getElementById('transportEmailAddr').style.display = 'none';
+    document.getElementById('transportEmailAddr').value = '';
+    document.getElementById('transportForm').classList.remove('hidden');
+    document.getElementById('transportResults').classList.add('hidden');
+    document.getElementById('transportResults').innerHTML = '';
+    document.getElementById('transportModal').classList.remove('hidden');
+  }
+
+  function closeTransportModal() {
+    document.getElementById('transportModal').classList.add('hidden');
+  }
+
+  // Show/hide email field based on checkbox
+  document.getElementById('sendTransportEmail').addEventListener('change', function () {
+    document.getElementById('transportEmailAddr').style.display = this.checked ? 'block' : 'none';
+  });
+
+  async function fetchTransport() {
+    const origin = document.getElementById('originCity').value.trim();
+    if (!origin) { alert('Please enter your departure city.'); return; }
+
+    const wantsEmail = document.getElementById('sendTransportEmail').checked;
+    const emailAddr  = document.getElementById('transportEmailAddr').value.trim();
+    if (wantsEmail && (!emailAddr || !emailAddr.includes('@'))) {
+      alert('Please enter a valid email address.'); return;
+    }
+
+    // Show loader
+    document.getElementById('transportForm').classList.add('hidden');
+    const resultsEl = document.getElementById('transportResults');
+    resultsEl.classList.remove('hidden');
+    resultsEl.innerHTML = `
+      <div class="transport-loader">
+        <div class="transport-spinner"></div>
+        Voyara Transport Subagent is searching for options…<br>
+        <span style="font-size:0.8rem;opacity:0.6">This takes about 10–20 seconds</span>
+      </div>`;
+
+    try {
+      const payload = {
+        origin_city:   origin,
+        destination:   _transportDest,
+        travel_month:  _transportMonth,
+        travel_year:   _transportYear,
+        email:         wantsEmail ? emailAddr : ''
+      };
+
+      const resp = await fetch('http://localhost:8000/transport-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!resp.ok) {
+        const err = await resp.json();
+        throw new Error(err.detail || 'Server error');
+      }
+      const data = await resp.json();
+      renderTransportResults(data, payload, wantsEmail, emailAddr);
+    } catch (e) {
+      resultsEl.innerHTML = `
+        <div class="error-glass">❌ ${e.message}</div>
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="btn-back" onclick="closeTransportModal()">Close</button>
+          <button class="btn-next" onclick="document.getElementById('transportForm').classList.remove('hidden');document.getElementById('transportResults').classList.add('hidden');">← Try Again</button>
+        </div>`;
+    }
+  }
+
+  function renderTransportResults(data, payload, emailed, emailAddr) {
+    function modeCards(items, fields) {
+      if (!items || !items.length) return '<p style="color:var(--text-muted);font-size:0.84rem;padding:8px 0;">No options found for this mode.</p>';
+      return items.map(item => {
+        const rows = fields.map(([key, label]) => item[key]
+          ? `<div class="tc-row ${key==='note'?'note-row':''}"><strong>${label}</strong>${item[key]}</div>`
+          : '').join('');
+        const lnk = item.link ? `<a class="tc-link" href="${item.link.url}" target="_blank" rel="noopener">${item.link.label}</a>` : '';
+        return `<div class="transport-card">${rows}${lnk}</div>`;
+      }).join('');
+    }
+
+    const flightCards = modeCards(data.flights, [
+      ['airline','Airline'], ['fare_range','Fare'], ['duration','Duration'],
+      ['nearest_airport','Airport'], ['note','Note']
+    ]);
+    const trainCards = modeCards(data.trains, [
+      ['train_name','Train'], ['fare_range','Fare'], ['duration','Duration'],
+      ['stations','Stations'], ['note','Note']
+    ]);
+    const busCards = modeCards(data.buses, [
+      ['operator','Operator'], ['fare_range','Fare'], ['duration','Duration'],
+      ['distance_km','Distance'], ['note','Note']
+    ]);
+
+    const emailBadge = emailed
+      ? `<div class="email-sent-badge">✅ Transport plan emailed to ${emailAddr}</div>`
+      : '';
+
+    document.getElementById('transportResults').innerHTML = `
+      ${emailBadge}
+      <div class="transport-summary">${data.summary}</div>
+      <div class="transport-section">
+        <h3>✈️ Flights</h3>${flightCards}
+      </div>
+      <div class="transport-section">
+        <h3>🚆 Trains</h3>${trainCards}
+      </div>
+      <div class="transport-section">
+        <h3>🚌 Buses / Road</h3>${busCards}
+      </div>
+      <div class="btn-row" style="margin-top:20px;">
+        <button class="btn-back" onclick="closeTransportModal()">Close</button>
+        <button class="btn-next" onclick="document.getElementById('transportForm').classList.remove('hidden');document.getElementById('transportResults').classList.add('hidden');">← New Search</button>
+      </div>
     `;
   }
 

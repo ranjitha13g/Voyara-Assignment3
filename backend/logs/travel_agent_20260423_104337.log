@@ -1,0 +1,112 @@
+2026-04-23 10:43:37  INFO      ================================================================
+2026-04-23 10:43:37  INFO        ✈  Voyara — AI Journey Companion — Startup
+2026-04-23 10:43:37  INFO        Log file : C:\Users\rrv\OneDrive - Infoblox Inc\Desktop\eag\Assigenment3-1\backend\logs\travel_agent_20260423_104337.log
+2026-04-23 10:43:37  INFO      ================================================================
+2026-04-23 10:43:37  INFO      ================================================================
+2026-04-23 10:43:37  INFO        ✈  Voyara — AI Journey Companion — Startup
+2026-04-23 10:43:37  INFO        Log file : C:\Users\rrv\OneDrive - Infoblox Inc\Desktop\eag\Assigenment3-1\backend\logs\travel_agent_20260423_104337.log
+2026-04-23 10:43:37  INFO      ================================================================
+2026-04-23 10:43:37  INFO      Gemini model     : gemini-3-flash-preview
+2026-04-23 10:43:37  INFO      Gemini model     : gemini-3-flash-preview
+2026-04-23 10:44:38  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:44:38  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 10:44:38  INFO        Month  : July   Year   : 2026
+2026-04-23 10:44:38  INFO        Dest   : india   Region : Southern India
+2026-04-23 10:44:38  INFO        Types  : ['beach']
+2026-04-23 10:44:38  INFO        Email  : mgautham16@gmail.com
+2026-04-23 10:44:38  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:44:38  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 10:44:38  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 10:44:38  INFO               Travel period   : July 2026
+2026-04-23 10:44:38  INFO               Location        : within India — Southern India
+2026-04-23 10:44:38  INFO               Trip types      : beach
+2026-04-23 10:44:38  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 10:44:38  INFO               Prompt length   : 1212 chars
+2026-04-23 10:44:38  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 10:44:38  INFO               Model           : gemini-3-flash-preview
+2026-04-23 10:44:39  ERROR     Gemini API error: 403 PERMISSION_DENIED. {'error': {'code': 403, 'message': 'Your API key was reported as leaked. Please use another API key.', 'status': 'PERMISSION_DENIED'}}
+2026-04-23 10:50:29  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:50:29  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 10:50:29  INFO        Month  : July   Year   : 2026
+2026-04-23 10:50:29  INFO        Dest   : india   Region : Southern India
+2026-04-23 10:50:29  INFO        Types  : ['beach']
+2026-04-23 10:50:29  INFO        Email  : mgautham16@gmail.com
+2026-04-23 10:50:29  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:50:29  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 10:50:29  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 10:50:29  INFO               Travel period   : July 2026
+2026-04-23 10:50:29  INFO               Location        : within India — Southern India
+2026-04-23 10:50:29  INFO               Trip types      : beach
+2026-04-23 10:50:29  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 10:50:29  INFO               Prompt length   : 1212 chars
+2026-04-23 10:50:29  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 10:50:29  INFO               Model           : gemini-3-flash-preview
+2026-04-23 10:50:30  ERROR     Gemini API error: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-04-23 10:52:15  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:52:15  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 10:52:15  INFO        Month  : June   Year   : 2026
+2026-04-23 10:52:15  INFO        Dest   : india   Region : Southern India
+2026-04-23 10:52:15  INFO        Types  : ['trek']
+2026-04-23 10:52:15  INFO        Email  : mgautham16@gmail.com
+2026-04-23 10:52:15  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:52:15  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 10:52:15  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 10:52:15  INFO               Travel period   : June 2026
+2026-04-23 10:52:15  INFO               Location        : within India — Southern India
+2026-04-23 10:52:15  INFO               Trip types      : trek
+2026-04-23 10:52:15  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 10:52:15  INFO               Prompt length   : 1211 chars
+2026-04-23 10:52:15  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 10:52:15  INFO               Model           : gemini-3-flash-preview
+2026-04-23 10:52:15  ERROR     Gemini API error: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-04-23 10:55:53  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:55:53  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 10:55:53  INFO        Month  : June   Year   : 2026
+2026-04-23 10:55:53  INFO        Dest   : india   Region : Southern India
+2026-04-23 10:55:53  INFO        Types  : ['trek']
+2026-04-23 10:55:53  INFO        Email  : mgautham16@gmail.com
+2026-04-23 10:55:53  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:55:53  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 10:55:53  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 10:55:53  INFO               Travel period   : June 2026
+2026-04-23 10:55:53  INFO               Location        : within India — Southern India
+2026-04-23 10:55:53  INFO               Trip types      : trek
+2026-04-23 10:55:53  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 10:55:53  INFO               Prompt length   : 1211 chars
+2026-04-23 10:55:53  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 10:55:53  INFO               Model           : gemini-3-flash-preview
+2026-04-23 10:55:54  ERROR     Gemini API error: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-04-23 10:56:52  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:56:52  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 10:56:52  INFO        Month  : June   Year   : 2026
+2026-04-23 10:56:52  INFO        Dest   : india   Region : Southern India
+2026-04-23 10:56:52  INFO        Types  : ['trek']
+2026-04-23 10:56:52  INFO        Email  : mgautham16@gmail.com
+2026-04-23 10:56:52  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:56:52  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 10:56:52  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 10:56:52  INFO               Travel period   : June 2026
+2026-04-23 10:56:52  INFO               Location        : within India — Southern India
+2026-04-23 10:56:52  INFO               Trip types      : trek
+2026-04-23 10:56:52  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 10:56:52  INFO               Prompt length   : 1211 chars
+2026-04-23 10:56:52  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 10:56:52  INFO               Model           : gemini-3-flash-preview
+2026-04-23 10:56:52  ERROR     Gemini API error: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}
+2026-04-23 10:59:40  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:59:40  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 10:59:40  INFO        Month  : June   Year   : 2026
+2026-04-23 10:59:40  INFO        Dest   : india   Region : Southern India
+2026-04-23 10:59:40  INFO        Types  : ['beach', 'trek']
+2026-04-23 10:59:40  INFO        Email  : mgautham16@gmail.com
+2026-04-23 10:59:40  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 10:59:40  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 10:59:40  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 10:59:40  INFO               Travel period   : June 2026
+2026-04-23 10:59:40  INFO               Location        : within India — Southern India
+2026-04-23 10:59:40  INFO               Trip types      : beach, trek
+2026-04-23 10:59:40  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 10:59:40  INFO               Prompt length   : 1218 chars
+2026-04-23 10:59:40  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 10:59:40  INFO               Model           : gemini-3-flash-preview
+2026-04-23 10:59:40  ERROR     Gemini API error: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key expired. Please renew the API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key expired. Please renew the API key.'}]}}

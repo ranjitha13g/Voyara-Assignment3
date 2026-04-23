@@ -9,6 +9,7 @@ Voyara is an agentic AI travel planner that takes your travel preferences throug
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Architecture & Flow](#architecture--flow)
+- [Transport Subagent](#transport-subagent)
 - [Prerequisites](#prerequisites)
 - [Setup](#setup)
 - [Running the App](#running-the-app)
@@ -25,7 +26,8 @@ Voyara is an agentic AI travel planner that takes your travel preferences throug
 - **India region selector** — Northern / Southern / Eastern / Western / Central / All
 - **12 trip-type styles** — Beach, Trek, Hill Station, Wildlife, Heritage, Spiritual, Honeymoon, Family, Backpacking, Luxury, Snow, Island
 - **Gemini-powered recommendations** — 5 curated packages with highlights, budget range, and real booking links
-- **HTML email delivery** — beautifully formatted email sent automatically to the user
+- **Transport Subagent** — per-package button to get Flights / Trains / Buses with fares, durations, and booking links
+- **HTML email delivery** — beautifully formatted email sent automatically to the user (travel packages + optional transport plan)
 - **Immersive UI** — full-viewport travel photography backgrounds that crossfade between steps
 - **Structured logging** — every step of the agent flow printed to terminal and saved to a timestamped log file
 - **Apache / Python HTTP server auto-detection** — startup script picks the right server automatically
@@ -99,6 +101,64 @@ Each package returned by Gemini includes:
 | `highlights` | 3–5 activity/attraction bullets |
 | `budget_per_person` | Estimated INR range |
 | `links` | 2–3 booking/reference URLs |
+
+---
+
+## Transport Subagent
+
+After travel packages are displayed, each package card has a **"View Transport Plan"** button. Clicking it opens a modal powered by a dedicated transport subagent.
+
+### How it works
+
+```
+User clicks "View Transport Plan" on a package
+           │
+           ▼
+   Modal opens — asks:
+   - Your departure city
+   - Email the plan? (optional)
+           │
+           │  POST /transport-plan
+           ▼
+   Transport Subagent (Gemini)
+   - Finds flight options with fares + booking links
+   - Finds train options (IRCTC, RailYatri)
+   - Finds bus / road options (redBus, AbhiBus)
+   - Gives seasonal travel tip + best-mode recommendation
+           │
+           ├──→  Results rendered in modal
+           └──→  HTML email sent (if requested)
+```
+
+### API Endpoint
+
+`POST /transport-plan`
+
+```json
+{
+  "origin_city":  "Bangalore",
+  "destination":  "Rishikesh, Uttarakhand",
+  "travel_month": "June",
+  "travel_year":  "2026",
+  "email":        "user@example.com"   // optional — omit to skip email
+}
+```
+
+Response includes `flights`, `trains`, `buses` arrays and a `summary` string.
+
+### Transport log output
+
+```
+TRANSPORT SUBAGENT  ▶  Prompt built
+  From     : Bangalore
+  To       : Rishikesh, Uttarakhand
+  Period   : June 2026
+TRANSPORT SUBAGENT  ▶  Calling Gemini API
+TRANSPORT SUBAGENT  ▶  Response received (18.4s, 3812 chars)
+TRANSPORT SUBAGENT  ▶  Parsed: 2 flights, 3 trains, 2 buses
+TRANSPORT SUBAGENT  ▶  Sending email to user@example.com
+TRANSPORT SUBAGENT  ▶  Email delivered → user@example.com
+```
 
 ---
 

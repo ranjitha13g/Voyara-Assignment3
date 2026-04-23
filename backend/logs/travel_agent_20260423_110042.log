@@ -1,0 +1,60 @@
+2026-04-23 11:00:42  INFO      ================================================================
+2026-04-23 11:00:42  INFO        ✈  Voyara — AI Journey Companion — Startup
+2026-04-23 11:00:42  INFO        Log file : C:\Users\rrv\OneDrive - Infoblox Inc\Desktop\eag\Assigenment3-1\backend\logs\travel_agent_20260423_110042.log
+2026-04-23 11:00:42  INFO      ================================================================
+2026-04-23 11:00:43  INFO      Gemini model     : gemini-3-flash-preview
+2026-04-23 11:01:03  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 11:01:03  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 11:01:03  INFO        Month  : May   Year   : 2026
+2026-04-23 11:01:03  INFO        Dest   : india   Region : Southern India
+2026-04-23 11:01:03  INFO        Types  : ['trek']
+2026-04-23 11:01:03  INFO        Email  : mgautham16@gmail.com
+2026-04-23 11:01:03  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 11:01:03  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 11:01:03  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 11:01:03  INFO               Travel period   : May 2026
+2026-04-23 11:01:03  INFO               Location        : within India — Southern India
+2026-04-23 11:01:03  INFO               Trip types      : trek
+2026-04-23 11:01:03  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 11:01:03  INFO               Prompt length   : 1209 chars
+2026-04-23 11:01:03  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 11:01:03  INFO               Model           : gemini-3-flash-preview
+2026-04-23 11:01:15  INFO      STEP 3  ▶  Gemini API response received
+2026-04-23 11:01:15  INFO               Elapsed time    : 12.11s
+2026-04-23 11:01:15  INFO               Response length : 4409 chars
+2026-04-23 11:01:15  INFO      STEP 4  ▶  Parsed 5 packages from Gemini response
+2026-04-23 11:01:15  INFO               [1] Kudremukh Peak Trek  —  Chikkamagaluru, Karnataka
+2026-04-23 11:01:15  INFO               [2] Meesapulimala High Altitude Trek  —  Munnar, Kerala
+2026-04-23 11:01:15  INFO               [3] Tadiandamol Peak Expedition  —  Coorg, Karnataka
+2026-04-23 11:01:15  INFO               [4] The Periyar Tiger Trail  —  Thekkady, Kerala
+2026-04-23 11:01:15  INFO               [5] Nilgiris Ridge Trek  —  Ooty/Coonoor, Tamil Nadu
+2026-04-23 11:01:15  INFO      STEP 5  ▶  Composing HTML email
+2026-04-23 11:01:15  INFO               To              : mgautham16@gmail.com
+2026-04-23 11:01:15  INFO               Subject         : ✈️ Your May 2026 Travel Packages — Trek
+2026-04-23 11:01:15  INFO      STEP 6  ▶  Connecting to SMTP server
+2026-04-23 11:01:15  INFO               Host            : smtp.gmail.com:587
+2026-04-23 11:01:18  INFO      STEP 7  ▶  Email delivered successfully → mgautham16@gmail.com
+2026-04-23 11:01:18  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 11:01:18  INFO        REQUEST COMPLETE  ✓
+2026-04-23 11:01:18  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 11:01:39  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 11:01:39  INFO        NEW REQUEST  →  POST /transport-plan
+2026-04-23 11:01:39  INFO        From     : Bangalore
+2026-04-23 11:01:39  INFO        To       : Chikkamagaluru, Karnataka
+2026-04-23 11:01:39  INFO        Period   : May 2026
+2026-04-23 11:01:39  INFO        Email    : mgautham16@gmail.com
+2026-04-23 11:01:39  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 11:01:39  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 11:01:39  INFO      TRANSPORT SUBAGENT  ▶  Prompt built
+2026-04-23 11:01:39  INFO        From     : Bangalore
+2026-04-23 11:01:39  INFO        To       : Chikkamagaluru, Karnataka
+2026-04-23 11:01:39  INFO        Period   : May 2026
+2026-04-23 11:01:39  INFO        Prompt   : 2234 chars
+2026-04-23 11:01:39  INFO      TRANSPORT SUBAGENT  ▶  Calling Gemini API
+2026-04-23 11:01:51  INFO      TRANSPORT SUBAGENT  ▶  Response received (12.23s, 2894 chars)
+2026-04-23 11:01:51  INFO      TRANSPORT SUBAGENT  ▶  Parsed: 1 flights, 2 trains, 3 buses
+2026-04-23 11:01:51  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 11:01:51  INFO      TRANSPORT SUBAGENT  ▶  Sending email to mgautham16@gmail.com
+2026-04-23 11:01:55  INFO      TRANSPORT SUBAGENT  ▶  Email delivered → mgautham16@gmail.com
+2026-04-23 11:01:55  INFO        TRANSPORT REQUEST COMPLETE  ✓
+2026-04-23 11:01:55  INFO      ════════════════════════════════════════════════════════════════
