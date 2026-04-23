@@ -72,7 +72,7 @@ Assigenment3-1/
 │                   FastAPI Backend  :8000                         │
 │                                                                  │
 │   STEP 1  Build structured prompt from user inputs              │
-│   STEP 2  Call Gemini API  (gemini-2.0-flash-preview)           │
+│   STEP 2  Call Gemini API  (gemini-3-flash-preview)           │
 │   STEP 3  Receive response  (~10–30 s)                          │
 │   STEP 4  Parse 5 travel packages from JSON response            │
 │   STEP 5  Compose rich HTML email                               │
