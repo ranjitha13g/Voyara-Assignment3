@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voyara — Your AI Journey Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --glass-bg:     rgba(8, 8, 32, 0.68);
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --glass-hover:  rgba(255, 255, 255, 0.08);
+      --accent:       #4fc3f7;
+      --accent-dark:  #1a73e8;
+      --success:      #66bb6a;
+      --text:         rgba(255,255,255,0.92);
+      --text-muted:   rgba(255,255,255,0.55);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Background Layers ────────────────────────────────────────── */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+      z-index: -2;
+    }
+    .bg-layer.active { opacity: 1; }
+
+    #bg-0 { background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80'); }
+    #bg-1 { background-image: url('https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=1920&q=80'); }
+    #bg-2 { background-image: url('https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?auto=format&fit=crop&w=1920&q=80'); }
+    #bg-3 { background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80'); }
+    #bg-loading { background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1920&q=80'); }
+    #bg-results { background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1920&q=80'); }
+
+    /* Dark cinematic overlay */
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(0,0,10,0.55) 0%,
+        rgba(0,0,20,0.72) 60%,
+        rgba(0,0,30,0.80) 100%
+      );
+      z-index: -1;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────────── */
+    #app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    /* ── App Header ───────────────────────────────────────────────── */
+    .app-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .app-header .logo-icon {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 0 18px rgba(79,195,247,0.7));
+      animation: float 3.5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .app-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #ffffff, #4fc3f7, #ffffff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+    .step-tagline {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      min-height: 1.4em;
+      transition: opacity 0.4s;
+      font-style: italic;
+    }
+
+    /* ── Step Progress Bar ────────────────────────────────────────── */
+    .step-progress {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 24px;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.4s;
+      background: rgba(255,255,255,0.06);
+    }
+    .step-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.4s;
+    }
+    .step-connector {
+      width: 60px;
+      height: 2px;
+      background: rgba(255,255,255,0.15);
+      margin: 0 6px;
+      margin-bottom: 20px;
+      transition: background 0.4s;
+    }
+    .step-item.active  .step-num  { border-color: var(--accent); color: var(--accent); background: rgba(79,195,247,0.12); box-shadow: 0 0 14px rgba(79,195,247,0.4); }
+    .step-item.active  .step-label{ color: var(--accent); }
+    .step-item.done    .step-num  { border-color: var(--success); color: var(--success); background: rgba(102,187,106,0.15); }
+    .step-item.done    .step-label{ color: var(--success); }
+    .step-connector.done { background: var(--success); }
+
+    /* ── Glass Card ───────────────────────────────────────────────── */
+    .glass-card {
+      width: 100%;
+      max-width: 620px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px 44px;
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      box-shadow:
+        0 32px 80px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      animation: cardIn 0.6s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Step Panels ──────────────────────────────────────────────── */
+    .step-panel { display: none; }
+    .step-panel.active {
+      display: block;
+      animation: stepIn 0.35s ease both;
+    }
+    .step-panel.leaving {
+      animation: stepOut 0.25s ease both;
+    }
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes stepOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(-20px); }
+    }
+
+    /* ── Form Labels ──────────────────────────────────────────────── */
+    .field-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .field-question {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+      line-height: 1.35;
+    }
+
+    /* ── Selects & Inputs ─────────────────────────────────────────── */
+    select, input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+      margin-bottom: 18px;
+      transition: border-color 0.25s, background 0.25s;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+    select option { background: #0e1124; color: #fff; }
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(79,195,247,0.08);
+      box-shadow: 0 0 0 3px rgba(79,195,247,0.15);
+    }
+    /* custom arrow for select */
+    .select-wrap { position: relative; margin-bottom: 18px; }
+    .select-wrap select { margin-bottom: 0; }
+    .select-wrap::after {
+      content: "▾";
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+      font-size: 1rem;
+    }
+
+    /* ── Row layout for month + year ─────────────────────────────── */
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
+
+    /* ── India Region Cards ───────────────────────────────────────── */
+    .region-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 480px) { .region-grid { grid-template-columns: 1fr; } }
+    .region-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .region-card:hover { background: rgba(79,195,247,0.1); border-color: var(--accent); }
+    .region-card.selected {
+      background: rgba(79,195,247,0.18);
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(79,195,247,0.25);
+    }
+    .region-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .region-info .region-name { font-weight: 600; font-size: 0.9rem; }
+    .region-info .region-desc { font-size: 0.74rem; color: var(--text-muted); margin-top: 1px; }
+
+    /* ── Trip Type Pills ──────────────────────────────────────────── */
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .pill {
+      padding: 9px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.07);
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(79,195,247,0.08); }
+    .pill.selected {
+      background: linear-gradient(135deg, rgba(26,115,232,0.6), rgba(79,195,247,0.4));
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(79,195,247,0.3);
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────────── */
+    .btn-row { display: flex; gap: 12px; justify-content: flex-end; margin-top: 6px; }
+    button {
+      padding: 13px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    button:active { transform: scale(0.97); }
+    .btn-next {
+      background: linear-gradient(135deg, #1a73e8, #4fc3f7);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(79,195,247,0.35);
+    }
+    .btn-next:hover { box-shadow: 0 6px 28px rgba(79,195,247,0.5); transform: translateY(-1px); }
+    .btn-submit {
+      background: linear-gradient(135deg, #2e7d32, #66bb6a);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(102,187,106,0.35);
+    }
+    .btn-submit:hover { box-shadow: 0 6px 28px rgba(102,187,106,0.5); transform: translateY(-1px); }
+    .btn-back {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.16); }
+
+    /* ── Divider ──────────────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin: 20px 0;
+    }
+
+    /* ── Loader ───────────────────────────────────────────────────── */
+    #loader {
+      width: 100%;
+      max-width: 620px;
+      text-align: center;
+      padding: 60px 20px;
+      display: none;
+    }
+    .plane-track {
+      position: relative;
+      width: 100%;
+      height: 60px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .flying-plane {
+      position: absolute;
+      font-size: 2.4rem;
+      top: 10px;
+      animation: flyAcross 2.4s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(79,195,247,0.6));
+    }
+    @keyframes flyAcross {
+      0%   { left: -60px;   opacity: 0; transform: scaleX(1); }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { left: calc(100% + 20px); opacity: 0; }
+    }
+    .loader-trail {
+      position: absolute;
+      top: 28px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(79,195,247,0.4), transparent);
+      animation: trailFade 2.4s ease-in-out infinite;
+    }
+    @keyframes trailFade {
+      0%, 100% { opacity: 0; }
+      40%, 60% { opacity: 1; }
+    }
+    #loader h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    #loader p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
+
+    /* ── Results ──────────────────────────────────────────────────── */
+    #results {
+      width: 100%;
+      max-width: 760px;
+      display: none;
+    }
+    .results-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .results-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      background: linear-gradient(90deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .success-pill {
+      display: inline-block;
+      background: rgba(102,187,106,0.2);
+      border: 1px solid rgba(102,187,106,0.5);
+      color: #a5d6a7;
+      border-radius: 30px;
+      padding: 6px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    .summary-glass {
+      background: rgba(79,195,247,0.08);
+      border: 1px solid rgba(79,195,247,0.2);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.85);
+      font-style: italic;
+    }
+    .pkg-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pkg-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    }
+    .pkg-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #1a73e8, #4fc3f7);
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .pkg-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .pkg-destination {
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .pkg-meta {
+      margin: 12px 0 8px;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+    .pkg-meta strong { color: #fff; font-weight: 600; }
+    .pkg-highlights {
+      margin: 8px 0 12px 18px;
+      font-size: 0.86rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+    }
+    .pkg-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .link-chip {
+      padding: 6px 16px;
+      background: rgba(26,115,232,0.25);
+      border: 1px solid rgba(79,195,247,0.35);
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      transition: all 0.2s;
+    }
+    .link-chip:hover { background: rgba(26,115,232,0.45); border-color: var(--accent); color: #fff; }
+
+    .restart-btn {
+      display: block;
+      width: 100%;
+      margin-top: 28px;
+      padding: 16px;
+      background: linear-gradient(135deg, #1a237e, #1a73e8);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+      box-shadow: 0 6px 24px rgba(26,115,232,0.4);
+      transition: all 0.2s;
+    }
+    .restart-btn:hover { box-shadow: 0 8px 32px rgba(26,115,232,0.6); transform: translateY(-2px); }
+
+    .error-glass {
+      background: rgba(198,40,40,0.15);
+      border: 1px solid rgba(239,154,154,0.4);
+      border-radius: 12px;
+      padding: 18px 22px;
+      color: #ef9a9a;
+      font-size: 0.92rem;
+      margin-bottom: 16px;
+    }
+
+    /* ── Hidden utility ───────────────────────────────────────────── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ── Background layers ── -->
+<div class="bg-layer active" id="bg-0"></div>
+<div class="bg-layer" id="bg-1"></div>
+<div class="bg-layer" id="bg-2"></div>
+<div class="bg-layer" id="bg-3"></div>
+<div class="bg-layer" id="bg-loading"></div>
+<div class="bg-layer" id="bg-results"></div>
+<div class="bg-overlay"></div>
+
+<!-- ── App shell ── -->
+<div id="app">
+
+  <!-- Header (hidden on results) -->
+  <div class="app-header" id="appHeader">
+    <span class="logo-icon">✈️</span>
+    <h1>Voyara</h1>
+    <p style="font-size:0.78rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(79,195,247,0.7);margin-top:2px;margin-bottom:4px;font-weight:500;">AI-Powered Journey Companion</p>
+    <p class="step-tagline" id="stepTagline">Your perfect journey begins here</p>
+  </div>
+
+  <!-- Step Progress (hidden on loader/results) -->
+  <div class="step-progress" id="stepProgress">
+    <div class="step-item active" id="si0">
+      <div class="step-num">1</div>
+      <div class="step-label">When</div>
+    </div>
+    <div class="step-connector" id="sc0"></div>
+    <div class="step-item" id="si1">
+      <div class="step-num">2</div>
+      <div class="step-label">Where</div>
+    </div>
+    <div class="step-connector" id="sc1"></div>
+    <div class="step-item" id="si2">
+      <div class="step-num">3</div>
+      <div class="step-label">What</div>
+    </div>
+    <div class="step-connector" id="sc2"></div>
+    <div class="step-item" id="si3">
+      <div class="step-num">4</div>
+      <div class="step-label">Email</div>
+    </div>
+  </div>
+
+  <!-- ── Glass card ── -->
+  <div class="glass-card" id="formCard">
+
+    <!-- STEP 0 — When -->
+    <div class="step-panel active" id="step0">
+      <span class="field-label">Step 1 of 4 — When</span>
+      <p class="field-question">When are you planning to travel?</p>
+      <div class="row-2">
+        <div>
+          <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:6px;">Travel Month</label>
+          <div class="select-wrap">
+            <select id="travelMonth">
+              <option value="">Select month</option>
+              <option>January</option><option>February</option><option>March</option>
+              <option>April</option><option>May</option><option>June</option>
+              <option>July</option><option>August</option><option>September</option>
+              <option>October</option><option>November</option><option>December</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:6px;">Travel Year</label>
+          <div class="select-wrap">
+            <select id="travelYear">
+              <option value="">Select year</option>
+              <option>2026</option><option>2027</option><option>2028</option>
+              <option>2029</option><option>2030</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(0)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 1 — Where -->
+    <div class="step-panel" id="step1">
+      <span class="field-label">Step 2 of 4 — Where</span>
+      <p class="field-question">Where do you want to go?</p>
+
+      <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:6px;">Destination Type</label>
+      <div class="select-wrap">
+        <select id="destType" onchange="onDestChange()">
+          <option value="">Select destination</option>
+          <option value="india">🇮🇳 Within India</option>
+          <option value="international">🌍 International</option>
+        </select>
+      </div>
+
+      <!-- India region picker -->
+      <div id="indiaRegionSection" class="hidden">
+        <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:10px;">Which part of India?</label>
+        <div class="region-grid" id="regionGrid">
+          <div class="region-card" data-region="Northern India" onclick="selectRegion(this)">
+            <span class="region-icon">🏔️</span>
+            <div class="region-info">
+              <div class="region-name">Northern India</div>
+              <div class="region-desc">HP, Uttarakhand, J&amp;K, Delhi, Punjab</div>
+            </div>
+          </div>
+          <div class="region-card" data-region="Southern India" onclick="selectRegion(this)">
+            <span class="region-icon">🌴</span>
+            <div class="region-info">
+              <div class="region-name">Southern India</div>
+              <div class="region-desc">Kerala, Goa, Tamil Nadu, Karnataka</div>
+            </div>
+          </div>
+          <div class="region-card" data-region="Eastern India" onclick="selectRegion(this)">
+            <span class="region-icon">🌊</span>
+            <div class="region-info">
+              <div class="region-name">Eastern India</div>
+              <div class="region-desc">Odisha, West Bengal, Northeast</div>
+            </div>
+          </div>
+          <div class="region-card" data-region="Western India" onclick="selectRegion(this)">
+            <span class="region-icon">🏜️</span>
+            <div class="region-info">
+              <div class="region-name">Western India</div>
+              <div class="region-desc">Rajasthan, Gujarat, Maharashtra</div>
+            </div>
+          </div>
+          <div class="region-card" data-region="Central India" onclick="selectRegion(this)">
+            <span class="region-icon">🌿</span>
+            <div class="region-info">
+              <div class="region-name">Central India</div>
+              <div class="region-desc">Madhya Pradesh, Chhattisgarh</div>
+            </div>
+          </div>
+          <div class="region-card" data-region="All Regions" onclick="selectRegion(this)">
+            <span class="region-icon">🗺️</span>
+            <div class="region-info">
+              <div class="region-name">All of India</div>
+              <div class="region-desc">No preference — show me everything</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- International country picker -->
+      <div id="intlSection" class="hidden">
+        <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:6px;">Preferred Country <span style="opacity:0.5">(optional)</span></label>
+        <input type="text" id="specificCountry" placeholder="e.g. Japan, Thailand, Switzerland…" />
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="prevStep(1)">← Back</button>
+        <button class="btn-next" onclick="nextStep(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — What -->
+    <div class="step-panel" id="step2">
+      <span class="field-label">Step 3 of 4 — What</span>
+      <p class="field-question">What kind of trip are you dreaming of?</p>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:14px;">Select one or more trip styles</p>
+      <div class="pill-grid" id="tripTypePills">
+        <div class="pill" data-value="beach">🏖️ Beach</div>
+        <div class="pill" data-value="trek">🥾 Trek &amp; Adventure</div>
+        <div class="pill" data-value="hillstation">⛰️ Hill Station</div>
+        <div class="pill" data-value="wildlife">🐯 Wildlife / Safari</div>
+        <div class="pill" data-value="heritage">🏛️ Heritage &amp; Culture</div>
+        <div class="pill" data-value="spiritual">🙏 Spiritual / Pilgrimage</div>
+        <div class="pill" data-value="honeymoon">💑 Honeymoon</div>
+        <div class="pill" data-value="family">👨‍👩‍👧 Family Vacation</div>
+        <div class="pill" data-value="backpacking">🎒 Backpacking</div>
+        <div class="pill" data-value="luxury">💎 Luxury Resort</div>
+        <div class="pill" data-value="snow">❄️ Snow &amp; Winter Sports</div>
+        <div class="pill" data-value="island">🏝️ Island Getaway</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="prevStep(2)">← Back</button>
+        <button class="btn-next" onclick="nextStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 — Email -->
+    <div class="step-panel" id="step3">
+      <span class="field-label">Step 4 of 4 — Receive Packages</span>
+      <p class="field-question">Where should we send your travel plan?</p>
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:18px;">We'll email you all 5 curated packages with booking links, highlights, and budget details.</p>
+      <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:6px;">Your Email Address</label>
+      <input type="email" id="userEmail" placeholder="you@example.com" />
+      <div class="btn-row">
+        <button class="btn-back" onclick="prevStep(3)">← Back</button>
+        <button class="btn-submit" onclick="submitForm()">✨ Let Voyara Find My Trip</button>
+      </div>
+    </div>
+
+  </div><!-- /glass-card -->
+
+  <!-- ── Loader ── -->
+  <div id="loader">
+    <div class="plane-track">
+      <div class="loader-trail"></div>
+      <span class="flying-plane">✈️</span>
+    </div>
+    <h2>Searching the world for you…</h2>
+    <p>Voyara is curating the best packages for you<br>based on your preferences. This takes 10–20 seconds.</p>
+  </div>
+
+  <!-- ── Results ── -->
+  <div id="results"></div>
+
+</div><!-- /app -->
+
+<script>
+  // ── State ────────────────────────────────────────────────────────
+  let currentStep = 0;
+  let selectedRegion = '';
+
+  const BG_IDS  = ['bg-0', 'bg-1', 'bg-2', 'bg-3'];
+  const TAGLINES = [
+    'When would you like to escape?',
+    'Every great journey starts with a destination.',
+    'What experiences move your soul?',
+    'Almost there — we\'ll send everything to your inbox!'
+  ];
+
+  // ── Background switcher ───────────────────────────────────────────
+  function setBg(id) {
+    document.querySelectorAll('.bg-layer').forEach(l => l.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }
+
+  // ── Step indicator ────────────────────────────────────────────────
+  function updateProgress(step) {
+    for (let i = 0; i < 4; i++) {
+      const si = document.getElementById('si' + i);
+      si.classList.remove('active', 'done');
+      if (i < step)  si.classList.add('done');
+      if (i === step) si.classList.add('active');
+    }
+    for (let i = 0; i < 3; i++) {
+      const sc = document.getElementById('sc' + i);
+      sc.classList.toggle('done', i < step);
+    }
+  }
+
+  function showStep(n) {
+    const panels = document.querySelectorAll('.step-panel');
+    panels.forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+    const next = document.getElementById('step' + n);
+    if (next) { next.style.display = 'block'; next.classList.add('active'); }
+    updateProgress(n);
+    setBg(BG_IDS[n]);
+    document.getElementById('stepTagline').textContent = TAGLINES[n];
+    currentStep = n;
+  }
+
+  function nextStep(from) {
+    // Validation
+    if (from === 0) {
+      if (!document.getElementById('travelMonth').value) { alert('Please select a travel month.'); return; }
+      if (!document.getElementById('travelYear').value)  { alert('Please select a travel year.');  return; }
+    }
+    if (from === 1) {
+      const dest = document.getElementById('destType').value;
+      if (!dest) { alert('Please select a destination type.'); return; }
+      if (dest === 'india' && !selectedRegion) { alert('Please select a region of India.'); return; }
+    }
+    if (from === 2) {
+      if (!document.querySelectorAll('.pill.selected').length) {
+        alert('Please select at least one trip type.'); return;
+      }
+    }
+    showStep(from + 1);
+  }
+
+  function prevStep(from) { showStep(from - 1); }
+
+  // ── Destination change handler ────────────────────────────────────
+  function onDestChange() {
+    const val = document.getElementById('destType').value;
+    document.getElementById('indiaRegionSection').classList.toggle('hidden', val !== 'india');
+    document.getElementById('intlSection').classList.toggle('hidden', val !== 'international');
+    selectedRegion = '';
+    document.querySelectorAll('.region-card').forEach(c => c.classList.remove('selected'));
+  }
+
+  function selectRegion(card) {
+    document.querySelectorAll('.region-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedRegion = card.dataset.region;
+  }
+
+  // ── Pill toggle ───────────────────────────────────────────────────
+  document.querySelectorAll('.pill').forEach(p =>
+    p.addEventListener('click', () => p.classList.toggle('selected'))
+  );
+
+  // ── Submit ────────────────────────────────────────────────────────
+  async function submitForm() {
+    const email = document.getElementById('userEmail').value.trim();
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+
+    const dest = document.getElementById('destType').value;
+    const payload = {
+      travel_month:     document.getElementById('travelMonth').value,
+      travel_year:      document.getElementById('travelYear').value,
+      destination_type: dest,
+      india_region:     dest === 'india' ? selectedRegion : '',
+      trip_types:       [...document.querySelectorAll('.pill.selected')].map(p => p.dataset.value),
+      specific_country: document.getElementById('specificCountry').value.trim(),
+      email
+    };
+
+    // Show loader
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('stepProgress').style.display = 'none';
+    document.getElementById('appHeader').style.display = 'none';
+    document.getElementById('loader').style.display = 'block';
+    setBg('bg-loading');
+
+    try {
+      const resp = await fetch('http://localhost:8000/plan-trip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!resp.ok) {
+        const err = await resp.json();
+        throw new Error(err.detail || 'Server error');
+      }
+      const data = await resp.json();
+      document.getElementById('loader').style.display = 'none';
+      setBg('bg-results');
+      renderResults(data, payload);
+    } catch (e) {
+      document.getElementById('loader').style.display = 'none';
+      setBg('bg-0');
+      const results = document.getElementById('results');
+      results.style.display = 'block';
+      results.innerHTML = `
+        <div class="glass-card" style="max-width:620px">
+          <div class="error-glass">❌ ${e.message}</div>
+          <button class="restart-btn" onclick="restartForm()">🔄 Try Again</button>
+        </div>`;
+    }
+  }
+
+  // ── Render results ────────────────────────────────────────────────
+  function renderResults(data, payload) {
+    const destLabel = payload.destination_type === 'india'
+      ? `India — ${payload.india_region || 'All Regions'}`
+      : (payload.specific_country || 'International');
+
+    let pkgsHtml = '';
+    (data.packages || []).forEach((pkg, i) => {
+      const highlights = (pkg.highlights || []).map(h => `<li>${h}</li>`).join('');
+      const links = (pkg.links || []).map(l =>
+        `<a class="link-chip" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`
+      ).join('');
+      pkgsHtml += `
+        <div class="pkg-card">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span class="pkg-number">${i + 1}</span>
+            <div>
+              <div class="pkg-name">${pkg.name}</div>
+              <div class="pkg-destination">📍 ${pkg.destination}</div>
+            </div>
+          </div>
+          <div class="pkg-meta">
+            <strong>Why ${payload.travel_month} ${payload.travel_year}:</strong> ${pkg.best_for}<br>
+            <strong>Budget per person:</strong> ${pkg.budget_per_person}
+          </div>
+          <ul class="pkg-highlights">${highlights}</ul>
+          <div class="pkg-links">${links}</div>
+        </div>`;
+    });
+
+    const results = document.getElementById('results');
+    results.style.display = 'block';
+    results.innerHTML = `
+      <div class="results-header">
+        <h2>Your Travel Packages ✈️</h2>
+        <div class="success-pill">✅ Packages sent to ${payload.email}</div>
+      </div>
+      <div class="summary-glass">${data.summary}</div>
+      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:18px;text-align:center;">
+        ${payload.travel_month} ${payload.travel_year} &nbsp;·&nbsp; ${destLabel} &nbsp;·&nbsp;
+        ${payload.trip_types.join(', ')}
+      </div>
+      ${pkgsHtml}
+      <button class="restart-btn" onclick="restartForm()">🔄 Plan Another Trip with Voyara</button>
+    `;
+  }
+
+  // ── Restart ───────────────────────────────────────────────────────
+  function restartForm() {
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('formCard').style.display = 'block';
+    document.getElementById('stepProgress').style.display = 'flex';
+    document.getElementById('appHeader').style.display = 'block';
+    // Reset fields
+    document.getElementById('travelMonth').value = '';
+    document.getElementById('travelYear').value = '';
+    document.getElementById('destType').value = '';
+    document.getElementById('specificCountry').value = '';
+    document.getElementById('userEmail').value = '';
+    document.getElementById('indiaRegionSection').classList.add('hidden');
+    document.getElementById('intlSection').classList.add('hidden');
+    document.querySelectorAll('.region-card.selected').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.pill.selected').forEach(p => p.classList.remove('selected'));
+    selectedRegion = '';
+    showStep(0);
+  }
+
+  // Init
+  showStep(0);
+</script>
+</body>
+</html>

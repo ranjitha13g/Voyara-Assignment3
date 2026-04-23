@@ -1,0 +1,49 @@
+2026-04-23 09:36:55  INFO      ================================================================
+2026-04-23 09:36:55  INFO        ✈  Voyara — AI Journey Companion — Startup
+2026-04-23 09:36:55  INFO        Log file : C:\Users\rrv\OneDrive - Infoblox Inc\Desktop\eag\Assigenment3-1\backend\logs\travel_agent_20260423_093655.log
+2026-04-23 09:36:55  INFO      ================================================================
+2026-04-23 09:36:55  INFO      ================================================================
+2026-04-23 09:36:55  INFO        ✈  Voyara — AI Journey Companion — Startup
+2026-04-23 09:36:55  INFO        Log file : C:\Users\rrv\OneDrive - Infoblox Inc\Desktop\eag\Assigenment3-1\backend\logs\travel_agent_20260423_093655.log
+2026-04-23 09:36:55  INFO      ================================================================
+2026-04-23 09:36:55  INFO      ================================================================
+2026-04-23 09:36:55  INFO        ✈  Voyara — AI Journey Companion — Startup
+2026-04-23 09:36:55  INFO        Log file : C:\Users\rrv\OneDrive - Infoblox Inc\Desktop\eag\Assigenment3-1\backend\logs\travel_agent_20260423_093655.log
+2026-04-23 09:36:55  INFO      ================================================================
+2026-04-23 09:36:56  INFO      Gemini model     : gemini-3-flash-preview
+2026-04-23 09:36:57  INFO      Gemini model     : gemini-3-flash-preview
+2026-04-23 09:36:57  INFO      Gemini model     : gemini-3-flash-preview
+2026-04-23 09:37:17  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 09:37:17  INFO        NEW REQUEST  →  POST /plan-trip
+2026-04-23 09:37:17  INFO        Month  : January   Year   : 2026
+2026-04-23 09:37:17  INFO        Dest   : india   Region : Northern India
+2026-04-23 09:37:17  INFO        Types  : ['beach', 'heritage']
+2026-04-23 09:37:17  INFO        Email  : mgautham16@gmail.com
+2026-04-23 09:37:17  INFO      ════════════════════════════════════════════════════════════════
+2026-04-23 09:37:17  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 09:37:17  INFO      STEP 1  ▶  Gemini prompt built
+2026-04-23 09:37:17  INFO               Travel period   : January 2026
+2026-04-23 09:37:17  INFO               Location        : within India — Northern India
+2026-04-23 09:37:17  INFO               Trip types      : beach, heritage
+2026-04-23 09:37:17  INFO               Recipient email : mgautham16@gmail.com
+2026-04-23 09:37:17  INFO               Prompt length   : 1228 chars
+2026-04-23 09:37:17  INFO      STEP 2  ▶  Calling Gemini API
+2026-04-23 09:37:17  INFO               Model           : gemini-3-flash-preview
+2026-04-23 09:37:48  INFO      STEP 3  ▶  Gemini API response received
+2026-04-23 09:37:48  INFO               Elapsed time    : 31.01s
+2026-04-23 09:37:48  INFO               Response length : 4471 chars
+2026-04-23 09:37:48  INFO      STEP 4  ▶  Parsed 5 packages from Gemini response
+2026-04-23 09:37:48  INFO               [1] Spiritual Sands & Yoga Retreat  —  Rishikesh, Uttarakhand
+2026-04-23 09:37:48  INFO               [2] Regal Lakes and Palatial Heritage  —  Udaipur, Rajasthan
+2026-04-23 09:37:48  INFO               [3] The Ancient Riverfront Odyssey  —  Varanasi, Uttar Pradesh
+2026-04-23 09:37:48  INFO               [4] The Golden Sands Heritage Circuit  —  Jaisalmer, Rajasthan
+2026-04-23 09:37:48  INFO               [5] Riverside Temples & Hidden Heritage  —  Orchha, Madhya Pradesh
+2026-04-23 09:37:48  INFO      STEP 5  ▶  Composing HTML email
+2026-04-23 09:37:48  INFO               To              : mgautham16@gmail.com
+2026-04-23 09:37:48  INFO               Subject         : ✈️ Your January 2026 Travel Packages — Beach, Heritage
+2026-04-23 09:37:48  INFO      STEP 6  ▶  Connecting to SMTP server
+2026-04-23 09:37:48  INFO               Host            : smtp.gmail.com:587
+2026-04-23 09:37:52  INFO      STEP 7  ▶  Email delivered successfully → mgautham16@gmail.com
+2026-04-23 09:37:52  INFO      ────────────────────────────────────────────────────────────────
+2026-04-23 09:37:52  INFO        REQUEST COMPLETE  ✓
+2026-04-23 09:37:52  INFO      ════════════════════════════════════════════════════════════════
